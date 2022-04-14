@@ -6,9 +6,9 @@ public class Problem {
 	
 	private String solution; 
 	static Instance instance = new Instance();
-	static final int capacity = instance.ReadTxt().get(1),
-			itemNum = instance.ReadTxt().get(0);
-	static final double IOM = 0,
+	static final int capacity = instance.ReadTxt().get(1);
+	public static final int itemNum = instance.ReadTxt().get(0);
+	public static final double IOM = 0,
 			DOS = 0;
 
 	public Problem() {

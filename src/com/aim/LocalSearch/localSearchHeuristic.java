@@ -4,7 +4,12 @@ import java.util.List;
 
 public interface localSearchHeuristic {
 
-	String applySteepestDescentHC(List<String> solutionList);
+	String applySteepestDescentHC(String currentSolution);
 	
-	String applyDavissBitHC(List<String> solutionList);
+	String applyNextDescentHC(String currentSolution);
+	
+	String applyDavissBitHC(String currentSolution);
+	
+	String applyRandomMutationHC(String currentSolution);
+	
 }
