@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 
 public class TournamentSelection {
 	
-	private Problem problem;
+	private final Problem problem;
 	private int POPULATION_SIZE;
 	private List<String> solutionList =  new ArrayList();
 	

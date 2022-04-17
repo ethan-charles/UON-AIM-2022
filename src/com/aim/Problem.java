@@ -10,31 +10,49 @@ public class Problem {
 	static Instance instance = new Instance();
 	static final int capacity = instance.ReadTxt().get(1);
 	public static final int itemNum = instance.ReadTxt().get(0);
-	public static final double IOM = 0,
-			DOS = 0;
+	public static final double IOM = 0, DOS = 0;
 
 	public Problem() {
 		
 	}
 	
+	public int[] getItemWeightList() {
+		int[] array = new int[itemNum];
+		for(int i = 0; i < itemNum ; i++) {
+			array[i] = instance.ReadTxt().get(3 + 2 * i);
+		}
+		return array;
+	}
+	
+	public int[] getItemValueList() {
+		int[] array = new int[itemNum];
+		for(int i = 0; i < itemNum ; i++) {
+			array[i] = instance.ReadTxt().get(2 + 2 * i);
+		}
+		return array;
+	}
+	
 	public int getSolutionValue(String solution) {
-		int value = 0, weight = 0;
+		int[] valueList = getItemValueList();
+		int[] weightList = getItemWeightList();
+		int totalvalue = 0, totalweight = 0;
 		int choice = 0;
 		
 		for (int i = 0; i < solution.length(); i++) {
 			choice = Character.getNumericValue(solution.charAt(i));
 			if (choice == 1) {
-				value += instance.ReadTxt().get(2 + 2 * i);
-				weight += instance.ReadTxt().get(3 + 2 * i);
+				totalvalue += valueList[i]; 
+				totalweight += weightList[i];
 			}
 		}
 		
-		if(weight > capacity) {
+		if(totalweight > capacity) {
 			return 0;
 		}else {
-			return value;
+			return totalvalue;
 		}
 	}
+	
 	
 	public int getApplyTimes(double IOMorDOS) {
 		

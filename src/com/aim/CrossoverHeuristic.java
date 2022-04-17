@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class CrossoverHeuristic {
 	
-	private Problem problem;
+	private final Problem problem;
 	
 	public CrossoverHeuristic(Problem problem) {
 		

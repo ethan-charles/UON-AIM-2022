@@ -1,8 +1,6 @@
-package com.aim.LocalSearch;
+package com.aim.MultiMeme;
 
-import java.util.List;
-
-public interface localSearchHeuristic {
+public interface LocalSearchHeuristic {
 
 	String applySteepestDescentHC(String currentSolution);
 	
@@ -11,5 +9,7 @@ public interface localSearchHeuristic {
 	String applyDavissBitHC(String currentSolution);
 	
 	String applyRandomMutationHC(String currentSolution);
+	
+	String applyCombiningAlgorithmHC(String currentSolution);
 	
 }

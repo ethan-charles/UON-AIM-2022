@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class BitMutation {
 	
-	private Problem problem;
+	private final Problem problem;
 	private double MUTATION_RATE;
 
 	public BitMutation(Problem problem) {
