@@ -56,10 +56,10 @@ public class MutationHeuristicImpl implements MutationHeuristic {
 	@Override
 	public String applyBoundaryBitFlip(String solution) {
 		
-		int start = random.nextInt(Problem.itemNum / 2);
-		int end = random.nextInt(Problem.itemNum / 2) + Problem.itemNum / 2;
+		int mid = random.nextInt(Problem.itemNum - 1);
+		
 		StringBuffer solutionBuffer = new StringBuffer(solution);
-		for(int i = 0; i < Problem.itemNum - end + start; i++) {
+		for(int i = 0; i < Problem.itemNum - mid; i++) {
 			char temp = solutionBuffer.charAt(i);
 			solutionBuffer.setCharAt(i, solutionBuffer.charAt(Problem.itemNum - i));
 			solutionBuffer.setCharAt(Problem.itemNum - i, temp);

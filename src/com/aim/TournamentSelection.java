@@ -20,7 +20,7 @@ public class TournamentSelection {
 		
 	}
 	
-	public int tournamentSelection(int tournamentSize) {
+	public int applyHeuristic(int tournamentSize, List<String> solutionList) {
 		
 		int bestIndex = -1;
 		double bestFitness = Double.MAX_VALUE;
