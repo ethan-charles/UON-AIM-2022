@@ -10,15 +10,21 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.aim.MultiMeme.LocalSearchHeuristicImpl;
+
 
 public class MemeticAlgorithm {
 	
+	/**
+	 * Main algorithm for Multi-memetic
+	 * @author Yichen Lu
+	 */
 	private Instance instance;
 	private ProblemInitialization problem;
 	private MemeInitialization memeBuilder;
 	
 	private int populationSize, memeListNum, memeNum, trial, numberOf, itemNum;
-	private int currentBestSolutionValue = 0, backupBestSolutionValue = 0;
+	private double currentBestSolutionValue = 0, backupBestSolutionValue = 0;
 	private int bestSolutionIndex = -1, worstSolutionIndex = -1;
 	private double innovationRate;
 	private double IOM, DOS;
@@ -26,7 +32,13 @@ public class MemeticAlgorithm {
 	private List<String> solutionList;
 	private List<String> memeList;
 
-	
+	/**
+	 * Main function
+	 * @param instance all data read from file
+	 * @param problem frame config and basic running functions
+	 * @param memeBuilder initialized meme list
+	 * @param Trial the trial program has run
+	 */
 	public void multiMemeticAlgorithm(Instance instance, ProblemInitialization problem, MemeInitialization memeBuilder, int trial) throws IOException {
 		
 		this.problem = problem;
@@ -56,7 +68,13 @@ public class MemeticAlgorithm {
 		finalPrint(solutionList);
 	}
 	
-	
+	/**
+	 * Select parent to generate two offsprings, take crossover, mutation and local search
+	 * Generate the next parents list, print result
+	 * @param solutionList initialized solution list
+	 * @param memeList initialized meme list
+	 * @param applyTime which turn it is
+	 */
 	public List<String> applyMemeticAlgorithm(List<String> solutionList, List<String> memeList, int applyTime) throws IOException {
 		
 		int parent1, parent2, child1, child2;
@@ -76,9 +94,9 @@ public class MemeticAlgorithm {
 			solutionList.set(child2, child2solution);
 			
 			memeList = performMemeticInheritance(parent1, parent2, child1, child2, solutionList, memeList);
+			
 			//Crossover
 			for(int m = 0; m < problem.getApplyTimes(IOM); m ++) {
-				
 				int meme0 = Character.getNumericValue(memeList.get(child1).charAt(0));
 				int meme1 = Character.getNumericValue(memeList.get(child1).charAt(1));
 				
@@ -87,7 +105,6 @@ public class MemeticAlgorithm {
 			
 			//Mutation
 			for(int m = 0; m < problem.getApplyTimes(IOM); m ++) {
-				
 				int meme2 = Character.getNumericValue(memeList.get(child1).charAt(2));
 				int meme3 = Character.getNumericValue(memeList.get(child1).charAt(3));
 			
@@ -99,7 +116,6 @@ public class MemeticAlgorithm {
 			
 			//Localsearch
 			for(int m = 0; m < problem.getApplyTimes(DOS); m++) {
-				
 				int meme4 = Character.getNumericValue(memeList.get(child1).charAt(4));
 				
 				child1solution = memeBuilder.applyLocalSearchMeme(meme4, child1solution);
@@ -119,14 +135,20 @@ public class MemeticAlgorithm {
 	}
 	
 	
+	/**
+	 * Select two offspring
+	 * @param tournamentSize parent field
+	 * @param solutionList solution list
+	 */
 	public int applyTournamentSelection(int tournamentSize, List<String> solutionList) {
 		int bestIndex = -1;
 		double bestFitness = Integer.MIN_VALUE;
 		
 		List<Integer> list = IntStream.range(0, populationSize).boxed().collect(Collectors.toList());
-		Collections.shuffle(list);	//create list of random indices
+		//Create list of random indices
+		Collections.shuffle(list);	
 		
-		//select tournamentSize elements
+		//Select tournamentSize elements
 		for(int i = 0; i < tournamentSize; i++) {
 			int index = list.get(i);
 			double fitness = problem.getSolutionValue(solutionList.get(index));
@@ -140,6 +162,16 @@ public class MemeticAlgorithm {
 		return bestIndex;
 	}
 	
+	
+	/**
+	 * Inheritance the meme from the parent to offspring
+	 * @param parent1 parent index 1
+	 * @param parent2 parent index 2
+	 * @param child1 children index 1
+	 * @param child2 children index 2
+	 * @param solutionList solution list
+	 * @param memeList meme list
+	 */
 	private List<String> performMemeticInheritance(int parent1, int parent2, int child1, int child2, List<String> solutionList, List<String> memeList) {
 		double fparent1 = problem.getSolutionValue(solutionList.get(parent1));
 		double fparent2 = problem.getSolutionValue(solutionList.get(parent2));
@@ -169,6 +201,12 @@ public class MemeticAlgorithm {
 		return memeList;
 	}
 	
+	
+	/**
+	 * Take mutation to meme list
+	 * @param solutionIndex the related solution index
+	 * @param memeList meme list
+	 */
 	private List<String> performMutationOfMemeplex(int solutionIndex, List<String> memeList){
 		
 		Random random = new Random();
@@ -184,6 +222,12 @@ public class MemeticAlgorithm {
 		return memeList;
 	}
 	
+	
+	/**
+	 * Do replacement to generate the next parents list
+	 * @param solutionList solution list
+	 * @param memeList meme list
+	 */
 	private List<String> doReplacement(List<String> solutionList, List<String> memeList){
 		
 		int bestSolutionIndex = problem.getBestSolutionIndex(solutionList);
@@ -193,8 +237,10 @@ public class MemeticAlgorithm {
 		
 		if(bestSolutionIndex >= populationSize) {
 			for(int i = 0;i < populationSize; i++) {
-				solutionList.set(i, solutionList.get(i + populationSize));
-				memeList.set(i, memeList.get(i + populationSize));
+				String offspringSolution = solutionList.get(i + populationSize);
+				String offspringMeme = memeList.get(i + populationSize);
+				solutionList.set(i, offspringSolution);
+				memeList.set(i, offspringMeme);
 			}
 		}else {
 			for(int i = 0; i < populationSize; i++) {
@@ -203,14 +249,20 @@ public class MemeticAlgorithm {
 					memeList.set(i, bestMeme);
 					continue;
 				}
-				solutionList.set(i, solutionList.get(i + populationSize));
-				memeList.set(i, memeList.get(i + populationSize));
+				String offspringSolution = solutionList.get(i + populationSize);
+				String offspringMeme = memeList.get(i + populationSize);
+				solutionList.set(i, offspringSolution);
+				memeList.set(i, offspringMeme);
 			}
 		}
 		return solutionList;
 		
 	}
 
+	
+	/**
+	 * Print the final result to the output file
+	 */
 	public void finalPrint(List<String> solutionList) throws IOException {
 		String resultPath = "source/out/" + fileName + "_Result.txt";
         File ResultFile = new File(resultPath);
@@ -219,6 +271,8 @@ public class MemeticAlgorithm {
         	ResultFile.createNewFile();
         }
         StringBuffer message = new StringBuffer();
+        String bestSolution = solutionList.get(problem.getBestSolutionIndex(solutionList));
+        currentBestSolutionValue = problem.getSolutionValue(bestSolution);
         message.append("Trial#" + trial + ": \n" + "Best Solution : " + currentBestSolutionValue + " \nThe solution is : "
         		+ solutionList.get(problem.getBestSolutionIndex(solutionList)) + "\n\n");
         System.out.print(message);
@@ -230,14 +284,16 @@ public class MemeticAlgorithm {
         
 	}
 	
+	
+	/**
+	 * Print the result to the output file for the next time
+	 * @param solutionList solution list
+	 * @param applyTime the times program has applied
+	 */
 	public void printResult(List<String> solutionList, int applyTime) throws IOException {
 		
 		String outputPath = "source/out/" + fileName + "_trial" + trial + "_output.txt";
         File outputFile = new File(outputPath);
-        if(outputFile.exists()) {
-        	outputFile.delete();
-        	outputFile.createNewFile();
-        }
         
         StringBuffer message = new StringBuffer();
         String bestSolution = solutionList.get(problem.getBestSolutionIndex(solutionList));
@@ -253,8 +309,5 @@ public class MemeticAlgorithm {
         fw.flush();
         fw.close();    
 	}
-	
-
-	
 
 }

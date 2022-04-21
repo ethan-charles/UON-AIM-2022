@@ -4,8 +4,11 @@ import java.io.IOException;
 
 public class Coursework_Runner {
 
+	/**
+	 * Main Function
+	 * @author Yichen Lu
+	 */
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 		Instance read = new Instance();
 		read.readTxt();
 		

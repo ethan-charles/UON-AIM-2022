@@ -10,6 +10,10 @@ import com.aim.MultiMeme.MutationHeuristicImpl;
 
 public class MemeInitialization {
 	
+	/**
+	 * Initialize meme list
+	 * @author Yichen Lu
+	 */
 	private CrossoverHeuristicImpl crossover;
 	private LocalSearchHeuristicImpl localSearch;
 	private MutationHeuristicImpl mutation;
@@ -19,6 +23,10 @@ public class MemeInitialization {
 	private double setCrossoverPossibility, setMutationPossibility;
 	
 	
+	/**
+	 * Save all data read from file
+	 * @param instance all data read from file
+	 */
 	public MemeInitialization(Instance instance) {
 		this.populationSize = ProblemInitialization.populationSize;
 		this.memeListNum = ProblemInitialization.memeListNum;
@@ -30,7 +38,10 @@ public class MemeInitialization {
 		this.mutation = new MutationHeuristicImpl(instance);
 	}
 	
-	
+
+	/**
+	 * Main function
+	 */
 	public List<String> initializeMeme() {
 		List<String> memeList = new ArrayList();
 		Random random = new Random();
@@ -47,6 +58,14 @@ public class MemeInitialization {
 	}
 	
 	
+	/**
+	 * Take crossover to offspring
+	 * @param child1 child1 index
+	 * @param child2 child2 index
+	 * @param meme0 meme0 index
+	 * @param meme1 meme1 index
+	 * @param solutionList solution list
+	 */
 	public List<String> applyCrossoverMeme(int child1, int child2, int meme0, int meme1, List<String> solutionList) {
 		Random random = new Random();
 		double crossoverPossibility = setCrossoverPossibility;
@@ -97,6 +116,13 @@ public class MemeInitialization {
 		return solutionList;
 	}
 	
+	
+	/**
+	 * Take mutation to offspring
+	 * @param meme2 meme2 index
+	 * @param meme3 meme3 index
+	 * @param solution solution
+	 */
 	public String applyMutationMeme(int meme2, int meme3, String solution) {
 		Random random = new Random();
 		double mutationPossibility = setMutationPossibility;
@@ -147,6 +173,13 @@ public class MemeInitialization {
 		return solution;
 	}
 	
+	
+	/**
+	 * Take local search to offspring
+	 * @param meme4 meme4 index
+	 * @param meme5 meme5 index
+	 * @param solution solution
+	 */
 	public String applyLocalSearchMeme(int meme4, String solution) {
 		switch (meme4) {
 		case 0:

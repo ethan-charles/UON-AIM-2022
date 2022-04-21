@@ -8,34 +8,56 @@ import com.aim.ProblemInitialization;
 
 public class CrossoverHeuristicImpl {
 	
-	private int itemNum;
+	/**
+	 * Achieve crossover
+	 * @author Yichen Lu
+	 */
 	
+	private int itemNum;
+	private double delta;
+	
+	/**
+	 * Save all data read from file
+	 * @param instance all data read from file
+	 */
 	public CrossoverHeuristicImpl(Instance instance) {
 		this.itemNum = instance.getItemNum();
 	}
 
-	
+	/**
+	 * Heuristics 1-point crossover
+	 * @param child1Index child1 index
+	 * @param child2Index child2 index
+	 * @param solutionList solution list
+	 */
 	public List<String> applyCrossoverHeuristic1PTX(int child1Index, int child2Index, List<String> solutionList) {
 		Random random = new Random();
 		
-		StringBuffer child1 = new StringBuffer(solutionList.get(child1Index));
-		StringBuffer child2 = new StringBuffer(solutionList.get(child2Index));
+		StringBuffer child1current = new StringBuffer(solutionList.get(child1Index));
+		StringBuffer child2current = new StringBuffer(solutionList.get(child2Index));
+		
 		int start = random.nextInt(itemNum);
 		
 		for(int i = start; i < itemNum; i++) {
-			char temp1 = child1.charAt(i);
-	        char temp2 = child2.charAt(i);
-	        child1.setCharAt(i,temp2);
-	        child2.setCharAt(i,temp1);
+			char temp1 = child1current.charAt(i);
+	        char temp2 = child2current.charAt(i);
+	        child1current.setCharAt(i,temp2);
+	        child2current.setCharAt(i,temp1);
 		}
 		
-		solutionList.set(child1Index, child1.toString());
-		solutionList.set(child2Index, child2.toString());
+		solutionList.set(child1Index, child1current.toString());
+		solutionList.set(child2Index, child2current.toString());
 		return solutionList;
 		
 	}
 
 
+	/**
+	 * Heuristics 2-point crossover
+	 * @param child1Index child1 index
+	 * @param child2Index child2 index
+	 * @param solutionList solution list
+	 */
 	public List<String> applyCrossoverHeuristic2PTX(int child1Index, int child2Index, List<String> solutionList) {
 		Random random = new Random();
 		
@@ -57,6 +79,12 @@ public class CrossoverHeuristicImpl {
 	}
 
 
+	/**
+	 * Heuristics uniform crossover
+	 * @param child1Index child1 index
+	 * @param child2Index child2 index
+	 * @param solutionList solution list
+	 */
 	public List<String> applyCrossoverHeuristicUX(int child1Index, int child2Index, List<String> solutionList) {
 		Random random = new Random();
 		
@@ -78,7 +106,12 @@ public class CrossoverHeuristicImpl {
 	}
 
 
-	//Order Crossover
+	/**
+	 * Heuristics ordered crossover
+	 * @param child1Index child1 index
+	 * @param child2Index child2 index
+	 * @param solutionList solution list
+	 */
 	public List<String> applyCrossoverHeuristicOX(int child1Index, int child2Index, List<String> solutionList) {
 		Random random = new Random();
 		
@@ -124,7 +157,12 @@ public class CrossoverHeuristicImpl {
 	}
 
 
-	//Subtour Exchange Crossover
+	/**
+	 * Heuristics Subtour Exchange crossover
+	 * @param child1Index child1 index
+	 * @param child2Index child2 index
+	 * @param solutionList solution list
+	 */
 	public List<String> applyCrossoverHeuristicSEC(int child1Index, int child2Index, List<String> solutionList) {
 		Random random = new Random();
 		

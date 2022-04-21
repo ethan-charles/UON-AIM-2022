@@ -15,18 +15,29 @@ import java.io.IOException;
 
 public class Instance {
 	
+	/**
+	 * Read all data from the txt file, provide functions to get
+	 * @author Yichen Lu
+	 */
+	
 	private String fileName;
 	private int itemNum;
 	private double capacity;
 	private ArrayList<Double> ReadNumbers;
 
-	public void readTxt() throws IOException{ // Prevent file creation or read failure by catching the error, and printing it with catch or throw
+
+	/**
+	 * Main function
+	 */
+	public void readTxt() throws IOException{ 
+		// Prevent file creation or read failure by catching the error, and printing it with throw
 		
+		// Check the file if exists
 		while(true) {
 			Scanner src = new Scanner(System.in);
-			//System.out.print("Please Enter the filename: ");
-			//fileName = src.next();
-			fileName = "test1_4_20";
+			System.out.print("Please Enter the filename: ");
+			fileName = src.next();
+			
 			File file = new File("source/" + fileName + ".txt");
 			if(file.exists()) {
 				src.close();
@@ -40,10 +51,9 @@ public class Instance {
 		String line = "";
 		ArrayList<Double> ReadNumbers = new ArrayList<Double>();
 		
-			/* Read file */
-			//String pathname = "source/test1_4_20.txt"; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
+		// Read file from source folder
 		FileReader fileReader = new FileReader("source/" + fileName + ".txt");
-		BufferedReader buffer = new BufferedReader(fileReader); // 建立一个对象，它把文件内容转成计算机能读懂的语言
+		BufferedReader buffer = new BufferedReader(fileReader);
 		
 		line = buffer.readLine();
 	    for(int i = 0; i < line.length(); i++) {
@@ -66,25 +76,41 @@ public class Instance {
 		}
 		this.ReadNumbers = ReadNumbers;
 		fileReader.close();
-		buffer.close(); // 最后记得关闭文件
+		buffer.close();
+		// Close file
 	}
 	
+	/**
+	 * Get filename
+	 */
 	public String getFileName() {
 		return this.fileName;
 	}
 	
+	/**
+	 * Get item number
+	 */
 	public int getItemNum() {
 		return this.itemNum;
 	}
 	
+	/**
+	 * Get capacity
+	 */
 	public double getCapacity() {
 		return this.capacity;
 	}
 	
+	/**
+	 * Get all item
+	 */
 	public ArrayList<Double> getInstance(){
 		return this.ReadNumbers;
 	}
 	
+	/**
+	 * Get all item's weight
+	 */
 	public double[] getItemWeightList() {
 		double[] array = new double[itemNum];
 		for(int i = 0; i < itemNum ; i++) {
@@ -93,6 +119,9 @@ public class Instance {
 		return array;
 	}
 	
+	/**
+	 * Get all item's value
+	 */
 	public double[] getItemValueList() {
 		double[] array = new double[itemNum];
 		for(int i = 0; i < itemNum ; i++) {
