@@ -1,0 +1,4 @@
+Generations #99: 
+Best Solution : -7.0 The solution is : 1111
+Worst Solution : -7.0 The solution is : 1111
+

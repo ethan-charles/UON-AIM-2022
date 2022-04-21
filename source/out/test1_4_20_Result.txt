@@ -1,0 +1,4 @@
+Trial#2: 
+Best Solution : 0 
+The solution is : 1111
+

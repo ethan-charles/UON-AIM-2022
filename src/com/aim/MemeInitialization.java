@@ -4,33 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.aim.MultiMeme.CrossoverHeuristic;
-import com.aim.MultiMeme.LocalSearchHeuristic;
-import com.aim.MultiMeme.MutationHeuristic;
+import com.aim.MultiMeme.CrossoverHeuristicImpl;
+import com.aim.MultiMeme.LocalSearchHeuristicImpl;
+import com.aim.MultiMeme.MutationHeuristicImpl;
 
-public class InitializeMeme {
-
-	private final Problem problem;
-	private CrossoverHeuristic crossover;
-	private LocalSearchHeuristic localSearch;
-	private MutationHeuristic mutation;
+public class MemeInitialization {
 	
-	private Random random;
-	private int memeListNum = 5;
-	private int memeNum = 5;
+	private CrossoverHeuristicImpl crossover;
+	private LocalSearchHeuristicImpl localSearch;
+	private MutationHeuristicImpl mutation;
 	
-	public InitializeMeme(Problem problem, Random random) {
-		
-		this.problem = problem;
-		this.random = random;
-		
+	private int populationSize;
+	private int memeListNum, memeNum;
+	private double setCrossoverPossibility, setMutationPossibility;
+	
+	
+	public MemeInitialization(Instance instance) {
+		this.populationSize = ProblemInitialization.populationSize;
+		this.memeListNum = ProblemInitialization.memeListNum;
+		this.memeNum = ProblemInitialization.memeNum;
+		this.setCrossoverPossibility = ProblemInitialization.crossoverPossibility;
+		this.setMutationPossibility = ProblemInitialization.mutationPossibility;
+		this.crossover = new CrossoverHeuristicImpl(instance);
+		this.localSearch = new LocalSearchHeuristicImpl(instance);
+		this.mutation = new MutationHeuristicImpl(instance);
 	}
 	
+	
 	public List<String> initializeMeme() {
-		
 		List<String> memeList = new ArrayList();
-		for(int i = 0; i < Problem.populationSize * 2; i ++) {
-			StringBuffer current = new StringBuffer(memeListNum);
+		Random random = new Random();
+		
+		for(int i = 0; i < populationSize * 2; i ++) {
+			String currentMeme = new String("0").repeat(memeListNum);
+			StringBuffer current = new StringBuffer(currentMeme);
 			for(int j = 0; j < memeListNum; j++) {
 				current.setCharAt(j, String.valueOf(random.nextInt(memeNum)).charAt(0));
 			}
@@ -41,8 +48,9 @@ public class InitializeMeme {
 	
 	
 	public List<String> applyCrossoverMeme(int child1, int child2, int meme0, int meme1, List<String> solutionList) {
+		Random random = new Random();
+		double crossoverPossibility = setCrossoverPossibility;
 		
-		double crossoverPossibility = Problem.crossoverPossibility;
 		switch(meme0) {
 		case 0:
 			crossoverPossibility = crossoverPossibility + 0.1;
@@ -90,8 +98,9 @@ public class InitializeMeme {
 	}
 	
 	public String applyMutationMeme(int meme2, int meme3, String solution) {
+		Random random = new Random();
+		double mutationPossibility = setMutationPossibility;
 		
-		double mutationPossibility = Problem.mutationPossibility;
 		switch(meme2) {
 		case 0:
 			mutationPossibility = mutationPossibility + 0.1;

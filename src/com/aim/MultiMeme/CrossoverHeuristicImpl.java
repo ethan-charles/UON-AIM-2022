@@ -1,29 +1,28 @@
-package com.aim.MultiMeme.Impl;
+package com.aim.MultiMeme;
 
 import java.util.List;
 import java.util.Random;
 
-import com.aim.Problem;
-import com.aim.MultiMeme.CrossoverHeuristic;
+import com.aim.Instance;
+import com.aim.ProblemInitialization;
 
-public class CrossoverHeuristicImpl implements CrossoverHeuristic {
+public class CrossoverHeuristicImpl {
 	
-	private Random random;
-	private final Problem problem;
+	private int itemNum;
 	
-	public CrossoverHeuristicImpl(Random random, Problem problem) {
-		this.problem = problem;
-		this.random = random;
+	public CrossoverHeuristicImpl(Instance instance) {
+		this.itemNum = instance.getItemNum();
 	}
 
-	@Override
+	
 	public List<String> applyCrossoverHeuristic1PTX(int child1Index, int child2Index, List<String> solutionList) {
+		Random random = new Random();
 		
 		StringBuffer child1 = new StringBuffer(solutionList.get(child1Index));
 		StringBuffer child2 = new StringBuffer(solutionList.get(child2Index));
-		int start = random.nextInt(Problem.itemNum);
+		int start = random.nextInt(itemNum);
 		
-		for(int i = start; i < Problem.itemNum; i++) {
+		for(int i = start; i < itemNum; i++) {
 			char temp1 = child1.charAt(i);
 	        char temp2 = child2.charAt(i);
 	        child1.setCharAt(i,temp2);
@@ -36,13 +35,14 @@ public class CrossoverHeuristicImpl implements CrossoverHeuristic {
 		
 	}
 
-	@Override
-	public List<String> applyCrossoverHeuristic2PTX(int child1Index, int child2Index, List<String> solutionList) {
 
+	public List<String> applyCrossoverHeuristic2PTX(int child1Index, int child2Index, List<String> solutionList) {
+		Random random = new Random();
+		
 		StringBuffer child1 = new StringBuffer(solutionList.get(child1Index));
 		StringBuffer child2 = new StringBuffer(solutionList.get(child2Index));
-		int start = random.nextInt(Problem.itemNum / 2);
-		int end = random.nextInt(Problem.itemNum / 2) + Problem.itemNum / 2;
+		int start = random.nextInt(itemNum / 2);
+		int end = random.nextInt(itemNum / 2) + itemNum / 2;
 		
 		for(int i = start; i < end; i ++) {
 			char temp1 = child1.charAt(i);
@@ -56,13 +56,14 @@ public class CrossoverHeuristicImpl implements CrossoverHeuristic {
 		return solutionList;
 	}
 
-	@Override
-	public List<String> applyCrossoverHeuristicUX(int child1Index, int child2Index, List<String> solutionList) {
 
+	public List<String> applyCrossoverHeuristicUX(int child1Index, int child2Index, List<String> solutionList) {
+		Random random = new Random();
+		
 		StringBuffer child1 = new StringBuffer(solutionList.get(child1Index));
 		StringBuffer child2 = new StringBuffer(solutionList.get(child2Index));
 		
-		for(int i = 0; i < Problem.itemNum; i ++) {
+		for(int i = 0; i < itemNum; i ++) {
 			if(random.nextDouble() < 0.5) {
 				char temp1 = child1.charAt(i);
 				char temp2 = child2.charAt(i);
@@ -76,30 +77,31 @@ public class CrossoverHeuristicImpl implements CrossoverHeuristic {
 		return solutionList;
 	}
 
-	@Override
+
 	//Order Crossover
 	public List<String> applyCrossoverHeuristicOX(int child1Index, int child2Index, List<String> solutionList) {
+		Random random = new Random();
 		
 		StringBuffer parent1 = new StringBuffer(solutionList.get(child1Index));
 		StringBuffer parent2 = new StringBuffer(solutionList.get(child2Index));
 		StringBuffer child1 = new StringBuffer(parent1);
 		StringBuffer child2 = new StringBuffer(parent2);
-		int start = random.nextInt(Problem.itemNum / 2);
-		int end = random.nextInt(Problem.itemNum / 2) + Problem.itemNum / 2;
+		int start = random.nextInt(itemNum / 2);
+		int end = random.nextInt(itemNum / 2) + itemNum / 2;
 		
 		//Take out each part that needs to crossover
 		StringBuffer commonPart1 = new StringBuffer(parent1.substring(start, end)); 
 		StringBuffer commonPart2 = new StringBuffer(parent2.substring(start, end));
 		
 		int m = 0, n = 0;
-		for(int i = 0; i < Problem.itemNum; i++) {
+		for(int i = 0; i < itemNum; i++) {
 			
 			if(i >= start && i <= end) {
 				//Skip the common part
 				continue;
 			}
 			
-			while(m < Problem.itemNum - 1 && commonPart1.indexOf(parent2.substring(m)) != -1) {
+			while(m < itemNum - 1 && commonPart1.indexOf(parent2.substring(m)) != -1) {
 				//Search the position of the gene selected in the first step in the parent2
 				m ++;
 			}
@@ -107,7 +109,7 @@ public class CrossoverHeuristicImpl implements CrossoverHeuristic {
 			child1.setCharAt(i, parent2.charAt(m));
 			m ++;
 			
-			while(n < Problem.itemNum - 1 && commonPart2.indexOf(parent1.substring(n)) != -1) {
+			while(n < itemNum - 1 && commonPart2.indexOf(parent1.substring(n)) != -1) {
 				//Search the position of the gene selected in the first step in the parent1
 				n ++;
 			}
@@ -121,23 +123,24 @@ public class CrossoverHeuristicImpl implements CrossoverHeuristic {
 		return solutionList;
 	}
 
-	@Override
+
 	//Subtour Exchange Crossover
 	public List<String> applyCrossoverHeuristicSEC(int child1Index, int child2Index, List<String> solutionList) {
-
+		Random random = new Random();
+		
 		StringBuffer parent1 = new StringBuffer(solutionList.get(child1Index));
 		StringBuffer parent2 = new StringBuffer(solutionList.get(child2Index));
 		StringBuffer child1 = new StringBuffer(parent1);
 		StringBuffer child2 = new StringBuffer(parent2);
 		
-		int start = random.nextInt(Problem.itemNum / 2);
-		int end = random.nextInt(Problem.itemNum / 2) + Problem.itemNum / 2;
+		int start = random.nextInt(itemNum / 2);
+		int end = random.nextInt(itemNum / 2) + itemNum / 2;
 		StringBuffer child1Part = new StringBuffer(parent1.substring(start, end));
 		int[] child2PartIndex = new int[child1Part.length()];
 
 		//Search the position of chosen genes in the parent2
 		for(int j = 0; j < child1Part.length(); j++) {
-			for(int i = 0; i < Problem.itemNum; i++) {
+			for(int i = 0; i < itemNum; i++) {
 				if(child1Part.charAt(j) == parent2.charAt(i)) {
 					child2PartIndex[j] = i;
 				}
@@ -157,5 +160,4 @@ public class CrossoverHeuristicImpl implements CrossoverHeuristic {
 		return solutionList;
 	}
 
-	
 }
